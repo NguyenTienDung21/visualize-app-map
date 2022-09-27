@@ -2,29 +2,18 @@ import React, { useEffect, useState } from 'react';
 import { render } from 'react-dom';
 import data from './data/data.json'
 import { convertPathJSON, processEdge, processNode, convertEdge, convertNode, prepareData } from './utils';
-import Plot from 'react-plotly.js' 
+import Plot from 'react-plotly.js'
+import CircularExample from './CircularExample' 
 
 const App = () => {
   const [jsondata, setData] = useState(null)
-  
+  useEffect(()=>{
+    convertPathJSON(data,setData)
+  },[])
   return (
   <div>
-    {/* <CircularExample data={jsondata} width={3600} height={1800} /> */}
-    <Plot
-      data={[
-        prepareData(data)
-      ]
-    }
-      layout={  {
-        title: "Basic Sankey",
-        width: 1920, 
-        height: 2900,
-        
-        font: {
-          size: 10
-        }
-      } }
-    />
+    <CircularExample data={jsondata} width={3600} height={1800} />
+
   </div>
 )};
 

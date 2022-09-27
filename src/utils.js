@@ -3,7 +3,7 @@ import { LINE_COLOR, LINE_WIDTH, NODE_PAD, NODE_THICKNESS, ORIENTATION, SANKEY_T
 export const processNode = (node, idLookup, index) => {
     const { label, id } = node;
     idLookup[id] = index;
-    return label
+    return {name: label}
 } 
 
 export const processEdge = (edge, idLookup) => {
@@ -12,7 +12,7 @@ export const processEdge = (edge, idLookup) => {
 }
 
 export const convertNode = (nodes, idLookup) => {
-    return nodes.map((node) => processNode(node,idLookup))
+    return nodes.map((node, index) => processNode(node,idLookup, index))
 }
 
 export const convertEdge = (edges, idLookup) => edges.map((edge) => processEdge(edge, idLookup))
@@ -21,9 +21,10 @@ export const convertPathJSON = (jsonObj, setData) => {
     const lookup = new Object()
     const {nodes, edges} = jsonObj
     const newNode = convertNode(nodes,lookup)
-    const newEdge = convertEdge(edges, lookup)
-    const newEdgeFilter = newEdge.filter((item) => item.source !== item.target)
-    setData({nodes:newNode, links: newEdgeFilter})
+
+    const newEdge = convertEdge(edges, lookup).filter(item=> item.source !== item.target)
+
+    setData({nodes:newNode, links: newEdge})
     }
 
 export const prepareData =(data) =>{
@@ -33,8 +34,7 @@ export const prepareData =(data) =>{
     const label = nodes.map((item, index) => processNode(item, lookup, index))
     const edgesFilterSourceEqualTarget = edges.filter(item => item.source != item.target)
     const Edges =edgesFilterSourceEqualTarget
-    const source = Edges.map((item) => lookup[item.source])
-    const target = Edges.map((item) => lookup[item.target])
+    
     
     const value = edges.map(item => 1)
     return {
@@ -52,8 +52,6 @@ export const prepareData =(data) =>{
             },
       
         link: {
-          source: source,
-          target: target,
           value:  value
         }
     }
