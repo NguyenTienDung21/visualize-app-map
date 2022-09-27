@@ -1,17 +1,31 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import React, { useEffect, useState } from 'react';
+import { render } from 'react-dom';
+import data from './data/data.json'
+import { convertPathJSON, processEdge, processNode, convertEdge, convertNode, prepareData } from './utils';
+import Plot from 'react-plotly.js' 
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
+const App = () => {
+  const [jsondata, setData] = useState(null)
+  
+  return (
+  <div>
+    {/* <CircularExample data={jsondata} width={3600} height={1800} /> */}
+    <Plot
+      data={[
+        prepareData(data)
+      ]
+    }
+      layout={  {
+        title: "Basic Sankey",
+        width: 1920, 
+        height: 2900,
+        
+        font: {
+          size: 10
+        }
+      } }
+    />
+  </div>
+)};
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+render(<App />, document.getElementById('root'));
