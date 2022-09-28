@@ -12,7 +12,7 @@ const App = () => {
   },[])
   return (
   <div>
-    <CircularExample data={jsondata} width={3600} height={1800} />
+    <CircularExample data={jsondata} width={data.nodes.length *100} height={data.nodes.length * 100} />
 
   </div>
 )};

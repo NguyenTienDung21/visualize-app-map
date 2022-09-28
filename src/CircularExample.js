@@ -12,9 +12,6 @@ const color = scaleSequential(interpolateCool);
 const format = d3format(",d");
 
 export default class CircularExample extends React.Component {
-  state = {
-    highlightLinkIndexes: [],
-  }
   render() {
     const {
       data,
@@ -37,11 +34,14 @@ export default class CircularExample extends React.Component {
           left={margin.left}
           data={data}
           size={[width, height]}
-          nodeWidth={15}
-          nodePadding={100}
-          nodePaddingRatio={1}
+          nodeWidth={35}
+          nodePadding={250}
+          
+          nodePaddingRatio={0.8}
           // nodeId={d => d.name}
+
           iterations={32}
+
         >
           {({ data }) => (
             <Group>
@@ -59,18 +59,7 @@ export default class CircularExample extends React.Component {
                     fill={color(node.depth)}
                     opacity={0.5}
                     stroke="white"
-                    strokeWidth={10}
-                    onMouseOver={e => {
-                      this.setState({
-                        highlightLinkIndexes: [
-                          ...node.sourceLinks.map(l => l.index),
-                          ...node.targetLinks.map(l => l.index)
-                        ]
-                      });
-                    }}
-                    onMouseOut={e => {
-                      this.setState({ highlightLinkIndexes: [] });
-                    }}
+                    strokeWidth={2}
                   />
 
                   <Text
@@ -87,28 +76,15 @@ export default class CircularExample extends React.Component {
                 </Group>
               ))}
 
-              <Group strokeOpacity={1}>
+              <Group strokeOpacity={.2}>
                 {data.links.map((link, i) => (
                   <path
                     key={`link-${i}`}
                     d={link.path}
-                    stroke={
-                      this.state.highlightLinkIndexes.includes(i)
-                        ? 'red'
-                        : 'black'
-                    }
-                    strokeWidth={Math.max(2, link.width)}
-                    // opacity={0.2}
-                    opacity={
-                      0.2
-                    }
+                    stroke={link.circular ? 'red' : 'black'}
+                    strokeWidth={Math.max(1, link.width)}
+                    opacity={0.7}
                     fill="none"
-                    onMouseOver={e => {
-                      this.setState({ highlightLinkIndexes: [i] });
-                    }}
-                    onMouseOut={e => {
-                      this.setState({ highlightLinkIndexes: [] });
-                    }}
                   />
                 ))}
               </Group>
