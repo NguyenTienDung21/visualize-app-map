@@ -58,3 +58,44 @@ export const prepareData =(data) =>{
         }
     }
 }
+
+const nodeToSigmaNode = (node, idLookup, index) => {
+    const {label, count, id} = node
+    idLookup[id] = parseFloat(index).toString()
+    return {
+        "id": idLookup[id],
+        label,
+        size: count
+    }
+} 
+
+
+export const convertToSigmaNode = (nodes, idLookup) => {
+    return nodes.map((node, index) => nodeToSigmaNode(node,idLookup,index))
+}
+
+const edgeToSigmaEdge = (edge, idLookup, index) => {
+    const {source, target, count} = edge;
+    return {
+        id: index.toString(),
+        source: idLookup[source],
+        target: idLookup[target],
+        size: count,
+        label: edge.attribute[0],
+        color: "black"
+    }
+}
+
+export const convertToSigmaEdge = (edges, idLookup) => edges.map((edge,index) => edgeToSigmaEdge(edge,idLookup, index))
+
+export const convertToSigma = (data) => {
+    const lookup = new Object();
+    const {nodes, edges} = data
+    const newNode = convertToSigmaNode(nodes, lookup)
+    const edgesFilterSourceEqualTarget = edges.filter(item => item.source != item.target)
+    const newEdges = convertToSigmaEdge(edgesFilterSourceEqualTarget, lookup)
+    return {
+        nodes: newNode,
+        edges: newEdges
+    }
+}

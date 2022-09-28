@@ -40,7 +40,6 @@ export default function Sankey({
   if (extent) sankey.extent(extent);
   if (iterations) sankey.iterations(iterations);
   if (circularLinkGap) sankey.circularLinkGap(circularLinkGap);
-  
 
   const sankeyData = sankey(data);
 
