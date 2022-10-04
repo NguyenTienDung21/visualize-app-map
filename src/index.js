@@ -17,8 +17,8 @@ const App = () => {
     }
       layout={  {
         title: "Basic Sankey",
-        width: 1920, 
-        height: 2900,
+        width: 1200, 
+        height: 500,
         
         font: {
           size: 10
