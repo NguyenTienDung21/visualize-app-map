@@ -20,8 +20,8 @@ export default class CircularExample extends React.Component {
       margin = {
         top: 0,
         left: 0,
-        right: 50,
-        bottom: 0
+        right: 0,
+        bottom: 100
       }
     } = this.props;
 
@@ -34,10 +34,9 @@ export default class CircularExample extends React.Component {
           left={margin.left}
           data={data}
           size={[width, height]}
-          nodeWidth={35}
+          nodeWidth={5}
           nodePadding={250}
-          
-          nodePaddingRatio={0.8}
+          nodePaddingRatio={0.6}
           // nodeId={d => d.name}
 
           iterations={32}
@@ -49,45 +48,53 @@ export default class CircularExample extends React.Component {
                 // Hack to set color domain after <Sankey> has set depth
                 color.domain(extent(data.nodes, d => d.depth))
               }
-
-              {data.nodes.map((node, i) => (
-                <Group top={node.y0} left={node.x0} key={`node-${i}`}>
-                  <rect
-                    id={`rect-${i}`}
-                    width={node.x1 - node.x0}
-                    height={node.y1 - node.y0}
-                    fill={color(node.depth)}
-                    opacity={0.5}
-                    stroke="white"
-                    strokeWidth={2}
-                  />
-
-                  <Text
-                    x={18}
-                    y={((node.y1 - node.y0) / 2)}
-                    verticalAnchor="middle"
-                    style={{
-                      font: '10px sans-serif'
-                    }}
-                  >
-                    {node.name}
-                  </Text>
-
-                </Group>
-              ))}
-
-              <Group strokeOpacity={.2}>
+              <Group strokeOpacity={.435}>
                 {data.links.map((link, i) => (
                   <path
                     key={`link-${i}`}
                     d={link.path}
-                    stroke={link.circular ? 'red' : 'black'}
+                    stroke={'#6032D5'}
                     strokeWidth={Math.max(1, link.width)}
-                    opacity={0.7}
+                    opacity={1}
                     fill="none"
                   />
                 ))}
               </Group>
+
+              {data.nodes.map((node, i) => (
+                
+                <Group top={node.y0} left={node.x0} key={`node-${i}`}>
+                  <Text
+                    color="white"
+                    x={18}
+                    y={((node.y1 - node.y0) / 2)}
+                    verticalAnchor="middle"
+                    fill="white"
+                    style={{
+                      font: '10px sans-serif',
+                      color: 'white',
+                      // stroke: 'white',
+                      // fill: 'white',
+                      // zIndex: -1
+                    }}
+                  >
+                    {node.name}
+                  </Text>
+                  <rect
+                    id={`rect-${i}`}
+                    width={node.x1 - node.x0}
+                    height={node.y1 - node.y0}
+                    fill={'#6032D5'}
+                    opacity={1}
+                    stroke="none"
+                    strokeWidth={0}
+                  />
+
+
+                </Group>
+              ))}
+
+              
             </Group>
           )}
         </Sankey>
